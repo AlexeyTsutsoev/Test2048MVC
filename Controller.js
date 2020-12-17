@@ -23,18 +23,18 @@ export default class Controller {
             this.isGameLose = true;
         } else {
             if (!this.isGameLose && !this.isGameWon) {
-                switch (event.KeyCode) {
+                switch (event.keyCode) {
                     case 37:
                         this.model.moveLeft();
                         break;
                     case 38:
-                        //движение вверх
+                        this.model.moveUp();
                         break;
                     case 39:
-                        //движение вправо
+                        this.model.moveRight();
                         break;
                     case 40:
-                        //движение вниз
+                        this.model.moveDown();
                         break;
                 }
                 if (this.model.maxTile === this.WinningTile) this.view.isGameWon = true;

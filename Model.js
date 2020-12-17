@@ -10,14 +10,22 @@ export default class Model {
     canMove() {
         if (this.getEmptyTiles().length !== 0) return true;
         for (let i = 0; i < this.matrix.length; i++) {
-            for (let j = 0; j < this.matrix[i].length; j++) {
-                if (this.matrix[i][j].getValue() == this.matrix[i - 1][j].getValue()) return true;
+            for (let j = 0; j < this.matrix.length; j++) {
+                try {
+                    if (this.matrix[i][j].getValue() === this.matrix[i - 1][j].getValue()) return true;
+                } catch (err) {
+                    continue;
+                }
             }
         }
 
         for (let i = 0; i < this.matrix.length; i++) {
-            for (let j = 0; j < this.matrix[i].length; j++) {
-                if (this.matrix[i][j].getValue() == this.matrix[i][j - 1].getValue()) return true;
+            for (let j = 0; j < this.matrix.length; j++) {
+                try {
+                    if (this.matrix[i][j].getValue() == this.matrix[i][j - 1].getValue()) return true;
+                } catch (err) {
+                    continue;
+                }
             }
         }
 
@@ -55,9 +63,15 @@ export default class Model {
 
     addTile() {
         let emptyTiles = this.getEmptyTiles();
-        if (emptyTiles.length !== 0) {
-            let randomIndex = Math.round(emptyTiles.length * Math.random());
-            emptyTiles[randomIndex].setValue(this.twoOrFour());
+        try {
+            if (emptyTiles.length !== 0) {
+                let randomIndex = Math.round((emptyTiles.length - 1) * Math.random());
+                emptyTiles[randomIndex].setValue(this.twoOrFour());
+            }
+        } catch (err) {
+            console.log(randomIndex);
+            console.log(emptyTiles);
+            console.log(emptyTiles[randomIndex]);
         }
     }
 
@@ -111,5 +125,44 @@ export default class Model {
         }
 
         if (isChanged) this.addTile();
+    }
+
+    rotateMatrix() {
+        const ln = this.matrix.length;
+
+        for (let i = 0; i < ln / 2; i++) {
+            for (let j = i; j < ln - i - 1; j++) {
+                let tempTile = this.matrix[i][j];
+                this.matrix[i][j] = this.matrix[j][ln - i - 1];
+                this.matrix[j][ln - i - 1] = this.matrix[ln - i - 1][ln - j - 1];
+                this.matrix[ln - i - 1][ln - j - 1] = this.matrix[ln - j - 1][i];
+                this.matrix[ln - j - 1][i] = tempTile;
+            }
+        }
+    }
+
+
+    moveRight() {
+        this.rotateMatrix();
+        this.rotateMatrix();
+        this.moveLeft();
+        this.rotateMatrix();
+        this.rotateMatrix();
+    }
+
+    moveDown() {
+        this.rotateMatrix();
+        this.rotateMatrix();
+        this.rotateMatrix();
+        this.moveLeft();
+        this.rotateMatrix();
+    }
+
+    moveUp() {
+        this.rotateMatrix();
+        this.moveLeft();
+        this.rotateMatrix();
+        this.rotateMatrix();
+        this.rotateMatrix();
     }
 }
