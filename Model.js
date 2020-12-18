@@ -3,8 +3,30 @@ import Tile from './Tile.js'
 export default class Model {
     constructor() {
         this.maxTile = 0;
-        this.score = 0;
         this.createField();
+        this.score = 0;
+        localStorage.setItem('bestScore', this.score);
+    }
+
+    saveRecord() {
+        console.log('рекорд обновлен')
+        localStorage.setItem('bestScore', this.score);
+    }
+
+    getScore() {
+        const ln = this.matrix.length;
+        this.score = 0;
+
+        for (let i = 0; i < ln; i++) {
+            for (let j = 0; j < ln; j++) {
+                this.score += this.matrix[i][j].getValue();
+            }
+        }
+
+        if (this.score > localStorage.getItem('bestScore')) {
+            this.saveRecord();
+        }
+        return this.score;
     }
 
     canMove() {
@@ -103,7 +125,7 @@ export default class Model {
                 tilesArr[i].setValue(tilesArr[i].getValue() * 2);
                 tilesArr[i + 1].setValue(0);
                 if (tilesArr[i] > this.maxTile) this.maxTile = tilesArr[i];
-                this.score += tilesArr[i].getValue();
+                this.score = this.getScore();
                 isChanged = true;
             }
         }

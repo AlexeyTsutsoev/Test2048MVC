@@ -11,15 +11,32 @@ export default class Controller {
     }
 
     resetGame() {
-        this.model.score = 0;
-        view.isGameLose = false;
-        view.isGameWon = false;
+        console.log(`reset`)
+        this.isGameLose = false;
+        this.isGameWon = false;
         this.model.createField();
     }
 
+    restart() {
+        if (this.isGameLose) {
+            let lose = confirm('Вы проиграли. Сыграть ещё?');
+            if (lose) {
+                this.resetGame();
+            }
+        }
+        if (this.isGameWon) {
+            let win = confirm('Вы Выиграли! Сыграть ещё?');
+            if (win) {
+                this.resetGame();
+            }
+        }
+        this.view.render();
+    }
+
     control(event) {
-        if (event.KeyCode === 27) this.resetGame();
+        if (event.keyCode === 27) this.resetGame();
         if (!this.model.canMove()) {
+            console.log('нельзя двигаться')
             this.isGameLose = true;
         } else {
             if (!this.isGameLose && !this.isGameWon) {

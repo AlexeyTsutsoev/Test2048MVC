@@ -14,7 +14,8 @@ export default class View {
     render() {
         //созадние загаловка
         this.game.innerHTML = '';
-        let header = this.createElem('div', 'Header', this.controller.model.score);
+        let header = this.createElem('div', 'Header', `Текущее значение: ${this.controller.model.getScore()}
+        <br>Рекорд:${localStorage.getItem('bestScore')}`);
         this.game.appendChild(header);
         //создание поля
         let field = this.createElem('div', 'Field', '');
