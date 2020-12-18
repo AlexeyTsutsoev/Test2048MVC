@@ -37,7 +37,7 @@ export default class Controller {
                         this.model.moveDown();
                         break;
                 }
-                if (this.model.maxTile === this.WinningTile) this.view.isGameWon = true;
+                if (this.model.maxTile === this.WinningTile) this.isGameWon = true;
             }
         }
         this.view.render();

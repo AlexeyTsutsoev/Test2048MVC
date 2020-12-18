@@ -23,6 +23,7 @@ export default class View {
         for (let i = 0; i < this.controller.model.matrix.length; i++) {
             for (let j = 0; j < this.controller.model.matrix[i].length; j++) {
                 let tile = this.createElem('div', 'Tile', this.controller.model.matrix[i][j].value);
+                tile.style.background = this.controller.model.matrix[i][j].getColor();
                 field.appendChild(tile);
             }
         }
