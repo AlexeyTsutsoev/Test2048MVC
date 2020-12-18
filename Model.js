@@ -8,9 +8,10 @@ export default class Model {
     }
 
     canMove() {
+        const ln = this.matrix.length;
         if (this.getEmptyTiles().length !== 0) return true;
-        for (let i = 0; i < this.matrix.length; i++) {
-            for (let j = 0; j < this.matrix.length; j++) {
+        for (let i = 0; i < ln; i++) {
+            for (let j = 0; j < ln; j++) {
                 try {
                     if (this.matrix[i][j].getValue() === this.matrix[i - 1][j].getValue()) return true;
                 } catch (err) {
@@ -19,8 +20,8 @@ export default class Model {
             }
         }
 
-        for (let i = 0; i < this.matrix.length; i++) {
-            for (let j = 0; j < this.matrix.length; j++) {
+        for (let i = 0; i < ln; i++) {
+            for (let j = 0; j < ln; j++) {
                 try {
                     if (this.matrix[i][j].getValue() == this.matrix[i][j - 1].getValue()) return true;
                 } catch (err) {
@@ -47,8 +48,9 @@ export default class Model {
 
     getEmptyTiles() {
         let result = [];
-        for (let i = 0; i < this.matrix.length; i++) {
-            for (let j = 0; j < this.matrix[i].length; j++) {
+        const ln = this.matrix.length;
+        for (let i = 0; i < ln; i++) {
+            for (let j = 0; j < ln; j++) {
                 if (this.matrix[i][j].value === 0) {
                     result.push(this.matrix[i][j]);
                 }
@@ -78,8 +80,9 @@ export default class Model {
     compressTilesLeft(tilesArr) {
         let isChanged = false;
         let tempTile;
-        for (let i = 0; i < this.matrix.length - 1; i++) {
-            for (let j = 0; j < this.matrix[i].length - 1; j++) {
+        const ln = this.matrix.length;
+        for (let i = 0; i < ln - 1; i++) {
+            for (let j = 0; j < ln - 1; j++) {
                 if (tilesArr[j].getValue() === 0 && tilesArr[j + 1].getValue() !== 0) {
                     tempTile = tilesArr[j];
                     tilesArr[j] = tilesArr[j + 1];
@@ -93,8 +96,9 @@ export default class Model {
 
     mergeTiles(tilesArr) {
         let isChanged = false;
+        const ln = this.matrix.length;
 
-        for (let i = 0; i < this.matrix.length - 1; i++) {
+        for (let i = 0; i < ln - 1; i++) {
             if (tilesArr[i].getValue() !== 0 && tilesArr[i].getValue() === tilesArr[i + 1].getValue()) {
                 tilesArr[i].setValue(tilesArr[i].getValue() * 2);
                 tilesArr[i + 1].setValue(0);
@@ -106,7 +110,7 @@ export default class Model {
 
         if (isChanged) {
             let tempTile;
-            for (let i = 0; i < this.matrix.length - 1; i++) {
+            for (let i = 0; i < ln - 1; i++) {
                 if (tilesArr[i].getValue() == 0 && tilesArr[i + 1].getValue() !== 0) {
                     tempTile = tilesArr[i];
                     tilesArr[i] = tilesArr[i + 1];
@@ -119,8 +123,9 @@ export default class Model {
 
     moveLeft() {
         let isChanged = false;
+        const ln = this.matrix.length;
 
-        for (let i = 0; i < this.matrix.length; i++) {
+        for (let i = 0; i < ln; i++) {
             if (this.compressTilesLeft(this.matrix[i]) || this.mergeTiles(this.matrix[i])) isChanged = true;
         }
 
